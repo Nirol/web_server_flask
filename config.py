@@ -1,21 +1,55 @@
-from flask_bootstrap import Bootstrap
-from flask_moment import Moment
-from flask import Flask
-
-from flask_sqlalchemy import SQLAlchemy
 import os
 
-app = Flask(__name__)
-moment = Moment(app)
-bootstrap = Bootstrap(app)
-app.config['SECRET_KEY'] = 'hard to guess string'
+basedir = os.path.abspath(os.path.dirname(__file__))
 
-username = "root"
-passs = "4834calbon"
-host = "127.0.0.1/"
-db_name = "flasky"
-full_db_url = 'mysql://' + username + ":" + passs + "@" + host + db_name
-app.config['SQLALCHEMY_DATABASE_URI'] = full_db_url
-app.config['SQLALCHEMY_COMMIT_ON_TEARDOWN'] = True
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-db = SQLAlchemy(app)
+
+class Config:
+    SECRET_KEY = os.environ.get('APP_SECRET_KEY')
+    SQLALCHEMY_COMMIT_ON_TEARDOWN = True
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
+    db_username = os.environ.get('DB_USERNAME')
+    db_password = os.environ.get('DB_PASSWORD')
+    db_host = (os.environ.get('DB_HOSTNAME') or "127.0.0.1") + "/"
+    db_name =  os.environ.get('DB_NAME')
+    FULL_DB_URL = 'mysql://' + db_username + ":" + db_password + "@" + db_host + db_name
+
+    FLASKY_MAIL_SUBJECT_PREFIX = '[Bukka Blog]'
+    FLASKY_MAIL_SENDER = 'Bukka'
+
+    MAIL_SERVER = 'smtp.googlemail.com'
+    MAIL_PORT = 587
+    MAIL_USE_TLS = True
+    MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
+    MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
+
+    @staticmethod
+    def init_app(app):
+        pass
+
+
+class DevelopmentConfig(Config):
+    DEBUG = True
+    SQLALCHEMY_DATABASE_URI = Config.FULL_DB_URL
+
+
+class TestingConfig(Config):
+    TESTING = True
+    SQLALCHEMY_DATABASE_URI = Config.FULL_DB_URL
+    # SQLALCHEMY_DATABASE_URI = os.environ.get('TEST_DATABASE_URL') or \
+    #                           'sqlite:///' + os.path.join(basedir,
+    #                                                       'data-tests.sqlite')
+
+
+class ProductionConfig(Config):
+    SQLALCHEMY_DATABASE_URI = Config.FULL_DB_URL
+    # SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or \
+    #                           'sqlite:///' + os.path.join(basedir,
+    #                                                       'data.sqlite')
+
+
+config = {
+    'development': DevelopmentConfig,
+    'testing': TestingConfig,
+    'production': ProductionConfig,
+    'default': DevelopmentConfig
+}

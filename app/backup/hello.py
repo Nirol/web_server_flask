@@ -1,11 +1,10 @@
-from flask import render_template, session, redirect, url_for, flash
+from flask import render_template, session, redirect, url_for
 from datetime import datetime
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField
 from wtforms.validators import InputRequired
 from config import *
-import config
-from db_models.models import User, Role
+from app.models import User
 
 
 class NameForm(FlaskForm):
@@ -49,6 +48,4 @@ def user(name):
 
 
 if __name__ == '__main__':
-    from db_models import models
-
-    config.app.run(debug='True')
+    manager.run()
