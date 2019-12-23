@@ -11,6 +11,7 @@ class Config:
     db_password = os.environ.get('DB_PASSWORD')
     db_host = (os.environ.get('DB_HOSTNAME') or "127.0.0.1") + "/"
     db_name =  os.environ.get('DB_NAME')
+
     FULL_DB_URL = 'mysql://' + db_username + ":" + db_password + "@" + db_host + db_name
 
     FLASKY_MAIL_SUBJECT_PREFIX = '[Bukka Blog]'
@@ -21,7 +22,7 @@ class Config:
     MAIL_USE_TLS = True
     MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
     MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
-
+    FLASKY_ADMIN = os.environ.get('FLASKY_ADMIN')
     @staticmethod
     def init_app(app):
         pass
