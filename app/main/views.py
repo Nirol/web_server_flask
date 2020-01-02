@@ -11,10 +11,11 @@ from .forms import  EditProfileForm
 
 @main.route('/', methods=['GET', 'POST'])
 def index():
-    return render_template('index.html',
-                           name=session.get('name'),
-                           known=session.get('known', False),
-                           current_time=datetime.utcnow())
+    return "lol123"
+    # return render_template('index.html',
+    #                        name=session.get('name'),
+    #                        known=session.get('known', False),
+    #                        current_time=datetime.utcnow())
 
 
 @main.route('/admin')
