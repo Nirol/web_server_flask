@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+{% block head %}
+ {{ super() }}
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/auto_comp.css') }}">
+<link href="//code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" rel="Stylesheet">
+
+
+{% endblock %}
+{% block page_content %}
+
+
+<section>
+{% if yeshuv_name_select %}
+ Hello, {{ yeshuv_name_select }}!
+
+{% else %}
+ Hello, Stranger!
+{% endif %}
+</section>
+
+<form action="" method = "POST">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+        <input name="yeshuv_name" type="text" id="autocomplete" class="form1"/>
+    <input name="submit1" type="submit">
+
+</form>
+{% for error in form.yeshuv_name.errors %}
+    {{ error }}
+{% endfor %}
+{% endblock %}
+
+
+{% block scripts %}
+{{ super() }}
+<script src="//code.jquery.com/jquery-2.2.0.min.js"></script>
+<script src="//code.jquery.com/ui/1.10.2/jquery-ui.js" ></script>
+
+<script type="text/javascript">
+$(function() {
+    $("#autocomplete").autocomplete({
+        source:function(request, response) {
+            $.getJSON("{{url_for('main.autocomplete')}}",{
+                q: request.term,
+            }, function(data) {
+                response(data.matching_results);
+            });
+        },
+        minLength: 2,
+        select: function(event, ui) {
+            console.log(ui.item.value); // not in your question, but might help later
+        }
+    });
+})
+
+</script>
+
+<script type="text/javascript">
+    var csrf_token = "{{ csrf_token() }}";
+
+    $.ajaxSetup({
+        beforeSend: function(xhr, settings) {
+            if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type) && !this.crossDomain) {
+                xhr.setRequestHeader("X-CSRFToken", csrf_token);
+            }
+        }
+    });
+</script>
+{{ moment.include_moment() }}
+{{ moment.lang('es') }}
+{% endblock %}

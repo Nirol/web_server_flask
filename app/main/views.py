@@ -1,63 +1,79 @@
-from datetime import datetime
-from flask import render_template, session, redirect, url_for, abort, flash
-from flask_login import login_required, current_user
+from flask import render_template, jsonify
+from forms import YeshuvNameQuery
 
-from app import db
-from decorators import permission_required, admin_required
-from models import Permission, User
+from models import User, Yeshuv
 from . import main
-from .forms import  EditProfileForm
+from flask import request, session
+from app import db
 
 
 @main.route('/', methods=['GET', 'POST'])
 def index():
-    return "lol123"
-    # return render_template('index.html',
-    #                        name=session.get('name'),
-    #                        known=session.get('known', False),
-    #                        current_time=datetime.utcnow())
-
-
-@main.route('/admin')
-@login_required
-@admin_required
-def for_admins_only():
-    return "For administrators!"
-
-
-@main.route('/moderator')
-@login_required
-@permission_required(Permission.MODERATE_COMMENTS)
-def for_moderators_only():
-    return "For comment moderators!"
-
-
-@main.route('/secret')
-@login_required
-def secret():
-    return 'Only authenticated users are allowed!'
-
-
-@main.route('/user/<username>')
-def user(username):
-    user = User.query.filter_by(username=username).first()
+    ip_address = get_ip()
+    user = User.query.filter_by(ip=ip_address).first()
     if user is None:
-        abort(404)
-        return render_template('user.html', user=user)
-
-
-@main.route('/edit-profile', methods=['GET', 'POST'])
-@login_required
-def edit_profile():
-    form = EditProfileForm()
-    if form.validate_on_submit():
-        current_user.name = form.name.data
-        current_user.location = form.location.data
-        current_user.about_me = form.about_me.data
+        user = User(ip=ip_address)
         db.session.add(user)
-        flash('Your profile has been updated.')
-        return redirect(url_for('.user', username=current_user.username))
-    form.name.data = current_user.name
-    form.location.data = current_user.location
-    form.about_me.data = current_user.about_me
-    return render_template('edit_profile.html', form=form)
+        session['known'] = False
+    else:
+        session['known'] = True
+
+    session['ip'] = ip_address
+    user.ping()
+    return render_template('index.html',
+                           name=session.get('name'),
+                           known=session.get('known', False))
+
+
+
+
+@main.route("/a11", methods=['GET', 'POST'])
+def a11():
+    yeshuv_form = YeshuvNameQuery()
+    if yeshuv_form.validate_on_submit():
+        yeshuv_name = yeshuv_form.yeshuv_name.data
+        # to_json = single_yeshuv_json_response("18", 300)
+        # print(to_json)
+        # print("kkkaaaa")
+        # bb = jsonify(to_json)
+        # print(bb)
+        # return render_template('auto_complete.html',
+        #                        yeshuv_name_select=yeshuv_name, lol=bb)
+
+    return render_template('auto_complete.html', form=yeshuv_form)
+
+
+
+
+#
+# @main.route("/thread")
+# def get_graph_data():
+#     thread_id = request.args.get("thread_id", 3532967, type=int)
+#     pqdict, userdict = graphs.get_post_quote_dict(thread_id)
+#     G = graphs.create_graph(pqdict)
+#     s = graphs.graph_to_node_link(G, remove_singlets=True) # returns dict
+#     return flask.jsonify(s)
+
+
+
+
+
+
+
+@main.route('/autocomplete', methods=['GET'])
+def autocomplete():
+    search = request.args.get('q')
+    # optional_yeshuv_list = Yeshuv.query.filter(Yeshuv.yeshuv_name_hebrew.like('%' + str(search) + '%'))
+    optional_yeshuv_list = db.session.query(Yeshuv.yeshuv_name_hebrew).filter(
+        Yeshuv.yeshuv_name_hebrew.like('%' + str(search) + '%'))
+    yeshuvs = []
+    for yeshuv in optional_yeshuv_list:
+        yeshuvs.append(yeshuv.yeshuv_name_hebrew)
+    return jsonify(matching_results=yeshuvs)
+
+
+def get_ip():
+    if request.environ.get('HTTP_X_FORWARDED_FOR') is None:
+        return request.environ['REMOTE_ADDR']
+    else:
+        request.environ['HTTP_X_FORWARDED_FOR']

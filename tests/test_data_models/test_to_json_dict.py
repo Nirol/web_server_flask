@@ -1,10 +1,11 @@
 import unittest
 from flask import current_app
+from api.yeshuv import  get_yeshuv_data_api
+from app import create_app, db
 
-from app import db, create_app
 
 
-class BasicsTestCase(unittest.TestCase):
+class TestToJsonDict(unittest.TestCase):
     def setUp(self):
         self.app = create_app('testing')
         self.app_context = self.app.app_context()
@@ -13,14 +14,9 @@ class BasicsTestCase(unittest.TestCase):
 
     def tearDown(self):
         db.session.remove()
-        db.drop_all()
+        # db.drop_all()
         self.app_context.pop()
 
-    def test_app_exists(self):
-        print("asd")
-        print(current_app)
+    def test_to_json_dict(self):
+        get_yeshuv_data_api(3000)
         self.assertFalse(current_app is None)
-
-    def test_app_is_testing(self):
-
-        self.assertTrue(current_app.config['TESTING'])
