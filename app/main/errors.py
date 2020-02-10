@@ -14,5 +14,4 @@ def page_not_found(e):
         response = jsonify({'error': 'not found'})
         response.status_code = 404
         return response
-    print("lol?{}".format(e))
     return render_template('404.html'), 404

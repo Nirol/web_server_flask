@@ -6,6 +6,8 @@ class Config:
     SECRET_KEY = os.environ.get('APP_SECRET_KEY')
     SQLALCHEMY_COMMIT_ON_TEARDOWN = True
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+    SQLALCHEMY_ECHO = True
+    JSON_AS_ASCII = False
     db_username = "flask_user" #os.environ.get('DB_USERNAME')
     db_password ="123456"  #os.environ.get('DB_PASSWORD')
     db_host = (os.environ.get('DB_HOSTNAME') or "127.0.0.1") + "/"

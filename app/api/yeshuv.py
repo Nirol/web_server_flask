@@ -1,7 +1,8 @@
 import constants
-from db.db_queries import query_yeshuvknesset_by_sn
+from db_queries import query_yeshuvknesset_by_sn
+
 from . import api
-from logic.kalfi_display import get_kalfi_meta_data_for_yeshuv_by_display, \
+from kalfi_display import get_kalfi_meta_data_for_yeshuv_by_display, \
  yeshuv_json_response
 
 

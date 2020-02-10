@@ -45,21 +45,6 @@ def a11():
 
 
 
-#
-# @main.route("/thread")
-# def get_graph_data():
-#     thread_id = request.args.get("thread_id", 3532967, type=int)
-#     pqdict, userdict = graphs.get_post_quote_dict(thread_id)
-#     G = graphs.create_graph(pqdict)
-#     s = graphs.graph_to_node_link(G, remove_singlets=True) # returns dict
-#     return flask.jsonify(s)
-
-
-
-
-
-
-
 @main.route('/autocomplete', methods=['GET'])
 def autocomplete():
     search = request.args.get('q')
