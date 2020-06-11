@@ -1,6 +1,6 @@
 import unittest
 from app import create_app, db
-from db_queries import query_knesset22_kalfi
+from queries.knesset22 import query_knesset22_kalfi
 from tests import YESHUV_SN_FOR_TESTING
 
 

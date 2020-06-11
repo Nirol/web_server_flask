@@ -1,28 +1,18 @@
 from flask import render_template, jsonify
+
+
 from forms import YeshuvNameQuery
 
-from models import User, Yeshuv
+from models import  Yeshuv
+from yeshuv_sn_by_name import query_yeshuv_sn_by_name
 from . import main
-from flask import request, session
+from flask import request
 from app import db
 
 
 @main.route('/', methods=['GET', 'POST'])
 def index():
-    ip_address = get_ip()
-    user = User.query.filter_by(ip=ip_address).first()
-    if user is None:
-        user = User(ip=ip_address)
-        db.session.add(user)
-        session['known'] = False
-    else:
-        session['known'] = True
-
-    session['ip'] = ip_address
-    user.ping()
-    return render_template('index.html',
-                           name=session.get('name'),
-                           known=session.get('known', False))
+    return render_template('index.html')
 
 
 
@@ -31,14 +21,18 @@ def index():
 def a11():
     yeshuv_form = YeshuvNameQuery()
     if yeshuv_form.validate_on_submit():
+
         yeshuv_name = yeshuv_form.yeshuv_name.data
-        # to_json = single_yeshuv_json_response("18", 300)
+        yeshuv_sn = query_yeshuv_sn_by_name(yeshuv_name)
+        create_json_response=
+
+
         # print(to_json)
         # print("kkkaaaa")
         # bb = jsonify(to_json)
         # print(bb)
-        # return render_template('auto_complete.html',
-        #                        yeshuv_name_select=yeshuv_name, lol=bb)
+        return render_template('auto_complete.html',form=yeshuv_form,
+                               yeshuv_name_select=yeshuv_name)
 
     return render_template('auto_complete.html', form=yeshuv_form)
 
@@ -57,8 +51,3 @@ def autocomplete():
     return jsonify(matching_results=yeshuvs)
 
 
-def get_ip():
-    if request.environ.get('HTTP_X_FORWARDED_FOR') is None:
-        return request.environ['REMOTE_ADDR']
-    else:
-        request.environ['HTTP_X_FORWARDED_FOR']

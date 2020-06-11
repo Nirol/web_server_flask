@@ -1,31 +1,10 @@
 from datetime import datetime
 from flask_login import UserMixin
+from sqlalchemy import Integer, ForeignKey, Column
+from sqlalchemy.ext.declarative import declared_attr
+
 from app import db, login_manager
 from constants import KnessetVars, KNESSETS_LIST
-
-
-class User(UserMixin, db.Model):
-    __tablename__ = 'users'
-    id = db.Column(db.Integer, primary_key=True)
-    ip = db.Column(db.String(64), unique=True, index=True)
-    member_since = db.Column(db.DateTime(), default=datetime.utcnow)
-    last_seen = db.Column(db.DateTime(), default=datetime.utcnow)
-
-    def __init__(self, **kwargs):
-        super(User, self).__init__(**kwargs)
-
-    def ping(self):
-        self.last_seen = datetime.utcnow()
-        db.session.add(self)
-
-
-@login_manager.user_loader
-def load_user(user_id):
-    return User.query.get(int(user_id))
-
-
-login_manager.anonymous_user = User
-
 
 
 
@@ -36,7 +15,7 @@ class Yeshuv(db.Model):
     yeshuv_type = db.Column(db.Integer)
     yeshuv_name_en = db.Column(db.Text)
     yeshuv_name_hebrew = db.Column(db.Text)
-    Knesset_18 = db.relationship('Knesset_18', backref='yeshuv', lazy=True)
+    # Knesset_22 = db.relationship('Knesset_22', backref='yeshuv', lazy=True)
 
     def __repr__(self):
         return '[{}]'.format(self.yeshuv_name_hebrew)
@@ -47,8 +26,8 @@ class Kalfi(db.Model):
     yeshuv_sn = db.Column(db.Integer, primary_key=True)
     sub_kalfi_num = db.Column(db.Integer, primary_key=True)
     kalfi_num_int = db.Column(db.Integer, primary_key=True)
-    location = db.Column(db.Integer)
-    address = db.Column(db.Integer)
+    location = db.Column(db.Text)
+    address = db.Column(db.Text)
     accessible = db.Column(db.Integer)
     special_accessible = db.Column(db.Integer)
     arabic_printing = db.Column(db.Integer)
@@ -90,28 +69,27 @@ class Kalfi(db.Model):
 
 class Knesset(db.Model):
     __abstract__ = True
+    index = db.Column(db.Integer, primary_key=True, nullable=False )
+    @declared_attr
+    def yeshuv_sn(cls):
+        return Column(Integer,primary_key=True, forigen_key= ForeignKey('yeshuv.yeshuv_sn'))
+    # SN = db.Column(db.Integer, db.ForeignKey('yeshuv.yeshuv_sn'),
+    #                primary_key=True, nullable=False)
+    Kalfi_Num = db.Column(db.Integer, primary_key=True, nullable=False)
     BZB = db.Column(db.Integer, nullable=False)
     Voters = db.Column(db.Integer, nullable=False)
     Error_Voters = db.Column(db.Integer, nullable=False)
-    vote_percent = db.Column(db.Float, nullable=False)
+    Vote_Percent = db.Column(db.Float, nullable=False)
+    Error_Vote_Percent = db.Column(db.Float, nullable=False)
 
 
 
 
-class Knesset_18(Knesset):
-    __tablename__ = 'knesset_18'
-    index = db.Column(db.Integer, primary_key=True, nullable=False)
-    SN = db.Column(db.Integer, db.ForeignKey('yeshuv.yeshuv_sn'),
-                   primary_key=True, nullable=False)
-    Kalfi_Num = db.Column(db.Integer, primary_key=True, nullable=False)
 
 
 class Knesset_22(Knesset):
     __tablename__ = 'knesset_22'
-    index = db.Column(db.Integer, primary_key=True, nullable=False)
-    SN = db.Column(db.Integer, db.ForeignKey('yeshuv.yeshuv_sn'),
-                   primary_key=True, nullable=False)
-    Kalfi_Num = db.Column(db.Integer, primary_key=True, nullable=False)
+
 
     def __eq__(self, other):
         return self.rank == other.rank and self.suit == other.suit

@@ -3,7 +3,9 @@ from typing import List, Type, Dict
 import json
 
 from db_helper import query_helper_kalfi_meta_top_or_bottom
-from db_queries import query_knesset22_kalfi, query_kalfi_metadata, \
+from queries.kalfi import query_kalfi_metadata
+
+from queries.knesset22 import query_knesset22_kalfi, \
     query_knesset22_kalfi_top_n_by_vote_percent, \
     query_knesset22_kalfi_bottom_n_vote_percent
 from constants import KalfiDisplayType
@@ -17,7 +19,8 @@ def fill_data_dict(kalfi_data, data_dict):
             'BZB': kalfi.BZB,
             'Voters': kalfi.Voters,
             'Error_Voters': kalfi.Error_Voters,
-            'vote_percent': kalfi.vote_percent
+            'Vote_Percent': kalfi.Vote_Percent,
+            'Error_Vote_Percent': kalfi.Error_Vote_Percent,
         }
         data_dict.append(dict)
 

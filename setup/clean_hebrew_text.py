@@ -1,9 +1,5 @@
-from app import create_app, db
-
-
-
 # used to clean hebrew texts
-from db_queries import query_kalfi_metadata_all
+from queries.yeshuv_knesset import query_kalfi_metadata_all
 import re
 from models import Kalfi
 

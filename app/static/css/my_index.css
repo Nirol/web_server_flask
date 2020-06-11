@@ -1,0 +1,19 @@
+
+
+.icon7 {
+padding-left:25px;
+    background:{{ url_for('static', filename='/images/bitcoin.png') }} no-repeat top left;
+  /* background: "static/images/bitcoin.png"; */
+    height: 200px;
+    width: 200px;
+    display: inline;
+    /* Other styles here */
+
+}
+
+
+
+.lolw {
+ color: green;
+
+}

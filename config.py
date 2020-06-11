@@ -9,7 +9,7 @@ class Config:
     SQLALCHEMY_ECHO = True
     JSON_AS_ASCII = False
     db_username = "flask_user" #os.environ.get('DB_USERNAME')
-    db_password ="123456"  #os.environ.get('DB_PASSWORD')
+    db_password ="flask#T761"  #os.environ.get('DB_PASSWORD')
     db_host = (os.environ.get('DB_HOSTNAME') or "127.0.0.1") + "/"
     db_name = "knesset_flask"    #os.environ.get('DB_NAME')  or
     FULL_DB_URL = 'mysql://' + db_username + ":" + db_password + "@" + db_host + db_name

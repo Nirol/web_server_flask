@@ -1,6 +1,8 @@
 import unittest
 from app import create_app
-from db_queries import *
+from queries.yeshuv_knesset import *
+from queries.knesset22 import query_knesset22_kalfi_top_n_by_vote_percent, \
+    query_knesset22_kalfi_bottom_n_vote_percent
 from tests import YESHUV_SN_FOR_TESTING
 
 

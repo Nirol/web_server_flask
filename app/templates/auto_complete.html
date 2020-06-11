@@ -2,7 +2,8 @@
 {% import "bootstrap/wtf.html" as wtf %}
 {% block head %}
  {{ super() }}
-
+<link rel="icon" type="image/png" sizes="32x32"
+  href="{{ url_for('static', filename='favicon.ico') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/auto_comp.css') }}">
 <link href="//code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" rel="Stylesheet">
 
@@ -38,23 +39,30 @@
 <script src="//code.jquery.com/ui/1.10.2/jquery-ui.js" ></script>
 
 <script type="text/javascript">
-$(function() {
-    $("#autocomplete").autocomplete({
-        source:function(request, response) {
-            $.getJSON("{{url_for('main.autocomplete')}}",{
-                q: request.term,
-            }, function(data) {
-                response(data.matching_results);
-            });
-        },
-        minLength: 2,
-        select: function(event, ui) {
-            console.log(ui.item.value); // not in your question, but might help later
-        }
-    });
-})
-
+   var view_autocomplete_path = "{{url_for('main.autocomplete')}}";
 </script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/autocomplete.js') }}"></script>
+
+
+
+<!--<script type="text/javascript">-->
+<!--$(function() {-->
+<!--    $("#autocomplete").autocomplete({-->
+<!--        source:function(request, response) {-->
+<!--            $.getJSON("{{url_for('main.autocomplete')}}",{-->
+<!--                q: request.term,-->
+<!--            }, function(data) {-->
+<!--                response(data.matching_results);-->
+<!--            });-->
+<!--        },-->
+<!--        minLength: 2,-->
+<!--        select: function(event, ui) {-->
+<!--            console.log(ui.item.value); // not in your question, but might help later-->
+<!--        }-->
+<!--    });-->
+<!--})-->
+
+<!--</script>-->
 
 <script type="text/javascript">
     var csrf_token = "{{ csrf_token() }}";

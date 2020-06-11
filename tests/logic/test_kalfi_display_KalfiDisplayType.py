@@ -1,7 +1,7 @@
 import unittest
 from app import create_app, db
 from constants import get_representation_by_kalfi_num, KalfiDisplayType
-from db_queries import query_yeshuvknesset_kalfi_num_22_by_sn
+from queries.yeshuv_knesset import query_yeshuvknesset_kalfi_num_22_by_sn
 from tests import YESHUV_SN_FOR_TESTING, YESHUV_SN_FOR_TESTING_B
 
 
