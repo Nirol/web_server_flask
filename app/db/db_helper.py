@@ -1,6 +1,6 @@
 from typing import List
 
-from queries import yeshuv_knesset
+from queries import yeshuv_knesset, kalfi
 from models import Knesset_22, Kalfi
 
 
@@ -26,7 +26,7 @@ def query_helper_kalfi_meta_top_or_bottom(yeshuv_sn: int,
                                               Knesset_22]) -> List[Kalfi]:
     yeshuv_kalfi_list_from_knesset22_query = __parse_knesset22_query_for_sn(
         kalfi_data_top_or_bottom_n)
-    kalfi_meta_n = yeshuv_knesset.query_kalfi_metadata_by_list(yeshuv_sn,
+    kalfi_meta_n = kalfi.query_kalfi_metadata_by_list(yeshuv_sn,
                                                                yeshuv_kalfi_list_from_knesset22_query)
     sorted_kalfi_meta_n = __fix_meta_n_order(kalfi_meta_n, kalfi_data_top_or_bottom_n )
     return sorted_kalfi_meta_n

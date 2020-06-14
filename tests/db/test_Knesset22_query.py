@@ -1,6 +1,7 @@
 import unittest
 from app import create_app, db
-from queries.knesset22 import query_knesset22_kalfi
+from queries.knesset22 import query_knesset22_kalfi, \
+    query_knesset_22_kalfi_count
 from tests import YESHUV_SN_FOR_TESTING
 
 
@@ -14,6 +15,14 @@ class TestKnesset_22(unittest.TestCase):
     def tearDown(self):
         db.session.remove()
         self.app_context.pop()
+
+
+    def test_kalfi_knesset_query_count(self):
+        num = query_knesset_22_kalfi_count(YESHUV_SN_FOR_TESTING)
+        print("aabbbcccc")
+        print(num)
+        self.assertEqual(num, 667)
+
 
 
     def test_kalfi_knesset_query_working(self):

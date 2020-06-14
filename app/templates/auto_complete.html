@@ -1,68 +1,75 @@
-{% extends "base.html" %}
-{% import "bootstrap/wtf.html" as wtf %}
-{% block head %}
- {{ super() }}
-<link rel="icon" type="image/png" sizes="32x32"
-  href="{{ url_for('static', filename='favicon.ico') }}">
+<link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='favicon.ico') }}">
+
+
 <link rel="stylesheet" href="{{ url_for('static', filename='css/auto_comp.css') }}">
-<link href="//code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" rel="Stylesheet">
-
-
-{% endblock %}
-{% block page_content %}
-
-
+<link href="//code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" rel="Stylesheet"> {% block page_content %}
 <section>
-{% if yeshuv_name_select %}
- Hello, {{ yeshuv_name_select }}!
 
-{% else %}
- Hello, Stranger!
-{% endif %}
+    {% if num_kalfis_22 %}
+    <p> Kalfi number 22: {{ num_kalfis_22 }} </p>
+    <br>
+    <br>
+    <br> {{ yeshuv_type_data }}
+
+
+    <p></p>
+    <p> yeshuv Kalfis: {{ kalfis_json }} </p>
+    <p></p>
+    <p> yeshuv years: {{ total_yeshuv_json }} </p>
+    <input type="hidden" id="kalfi_num" value="{{num_kalfis_22}}">
+    <input type="hidden" id="total_yeshuv_json" value="{{total_yeshuv_json}}">
+    <input type="hidden" id="yeshuv_name" value="{{yeshuv_name_select}}">
+    <input type="hidden" id="yeshuv_type" value="{{yeshuv_type_data}}">
+
+    <p></p>
+    {% endif %}
+
+    <p></p>
+    <p></p>
+
+
+
+
+
+
+    <canvas id="bar_evp"></canvas>
+
+
+    <!--    <div style="width: 75%"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>-->
+    <!--            <canvas id="canvas_bar_chart_vp" style="display: block; width: 1415px; height: 707px;" width="1415" height="707" class="chartjs-render-monitor"></canvas>-->
+    <!--        </div>-->
+
+    <p></p>
+    <!--    <div>-->
+    <!--        <canvas id="bar_evp"  width="1415" height="707" ></canvas>-->
+    <!--    </div>-->
+
+
+
 </section>
 
-<form action="" method = "POST">
-    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-        <input name="yeshuv_name" type="text" id="autocomplete" class="form1"/>
+<form action="" method="POST">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+    <input name="yeshuv_name" type="text" id="autocomplete" class="form1" />
     <input name="submit1" type="submit">
 
 </form>
-{% for error in form.yeshuv_name.errors %}
-    {{ error }}
-{% endfor %}
-{% endblock %}
-
-
-{% block scripts %}
-{{ super() }}
+{% for error in form.yeshuv_name.errors %} {{ error }} {% endfor %} {% endblock %} {% block scripts %} {{ super() }}
 <script src="//code.jquery.com/jquery-2.2.0.min.js"></script>
-<script src="//code.jquery.com/ui/1.10.2/jquery-ui.js" ></script>
+<script src="//code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
 
 <script type="text/javascript">
-   var view_autocomplete_path = "{{url_for('main.autocomplete')}}";
+    var view_autocomplete_path = "{{url_for('main.autocomplete')}}";
 </script>
+
+
 <script type="text/javascript" src="{{ url_for('static', filename='js/autocomplete.js') }}"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
 
+<script async type="text/javascript" src="{{ url_for('static', filename='js/bar_chart_error_vote_percent.js') }}"></script>
+<script async type="text/javascript" src="{{ url_for('static', filename='js/bar_chart_vote_percent.js') }}"></script>
+<script async type="text/javascript" src="{{ url_for('static', filename='js/wrap_bar_votes.js') }}"></script>
 
-
-<!--<script type="text/javascript">-->
-<!--$(function() {-->
-<!--    $("#autocomplete").autocomplete({-->
-<!--        source:function(request, response) {-->
-<!--            $.getJSON("{{url_for('main.autocomplete')}}",{-->
-<!--                q: request.term,-->
-<!--            }, function(data) {-->
-<!--                response(data.matching_results);-->
-<!--            });-->
-<!--        },-->
-<!--        minLength: 2,-->
-<!--        select: function(event, ui) {-->
-<!--            console.log(ui.item.value); // not in your question, but might help later-->
-<!--        }-->
-<!--    });-->
-<!--})-->
-
-<!--</script>-->
 
 <script type="text/javascript">
     var csrf_token = "{{ csrf_token() }}";
@@ -75,6 +82,9 @@
         }
     });
 </script>
-{{ moment.include_moment() }}
-{{ moment.lang('es') }}
-{% endblock %}
+
+
+
+
+
+{{ moment.include_moment() }} {{ moment.lang('es') }} {% endblock %}

@@ -1,6 +1,6 @@
 from typing import List
 from app import db
-from models import Kalfi
+from models import Kalfi, Knesset_22
 
 
 

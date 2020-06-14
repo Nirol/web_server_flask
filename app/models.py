@@ -241,3 +241,12 @@ class YeshuvKnesset(db.Model):
                 knesset_dict[var.name] = knesset_var_value
             data[knesset].append(knesset_dict)
         return data
+
+
+class YeshuvType(db.Model):
+    __tablename__ = 'yeshuv_type'
+    type_sn = db.Column(db.Integer, primary_key=True, nullable=False)
+    type_name = db.Column(db.Text)
+    type_vote_percent =  db.Column(db.Float)
+    type_error_vote_percent =  db.Column(db.Float)
+    type_avg_bzb =  db.Column(db.Float)

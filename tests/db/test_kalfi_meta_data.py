@@ -1,7 +1,11 @@
 import unittest
+
+from numpy.core.defchararray import strip
+
 from app import create_app, db
 from constants import KALFI_METADATA_COUNT
-from queries.yeshuv_knesset import  query_kalfi_metadata, query_kalfi_metadata_all
+from queries.kalfi import query_kalfi_metadata, query_kalfi_metadata_all
+
 from tests import YESHUV_SN_FOR_TESTING, YESHUV_SN_FOR_TESTING_C
 
 
@@ -25,7 +29,7 @@ class TestKalfiMeta(unittest.TestCase):
     def test_kalfi_metadata_query_correct_1(self):
         kalfi_meta_data_list = query_kalfi_metadata(YESHUV_SN_FOR_TESTING)
         kalfi_15_meta_data = kalfi_meta_data_list[15]
-        self.assertEqual('שבטי ישראל 27', kalfi_15_meta_data.address)
+        self.assertEqual('שבטי ישראל 27', strip(kalfi_15_meta_data.address))
 
         self.assertEqual(kalfi_15_meta_data.kalfi_num_int, 18)
         self.assertEqual(kalfi_15_meta_data.sub_kalfi_num, 0)

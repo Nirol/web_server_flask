@@ -15,6 +15,8 @@ class TestYeshuvKnesset(unittest.TestCase):
         db.session.remove()
         self.app_context.pop()
 
+
+
     def test_yeshuv_knesset_kalfi_num_query_working(self):
         num = query_yeshuvknesset_kalfi_num_22_by_sn(YESHUV_SN_FOR_TESTING)
         self.assertIsNotNone(num)

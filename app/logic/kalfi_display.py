@@ -1,5 +1,5 @@
 import abc
-from typing import List, Type, Dict
+from typing import List, Type, Dict, Mapping
 import json
 
 from db_helper import query_helper_kalfi_meta_top_or_bottom
@@ -10,6 +10,10 @@ from queries.knesset22 import query_knesset22_kalfi, \
     query_knesset22_kalfi_bottom_n_vote_percent
 from constants import KalfiDisplayType
 from models import Kalfi, Knesset_22, YeshuvKnesset
+import constants
+from queries.yeshuv_knesset import query_yeshuvknesset_by_sn
+
+
 
 
 def fill_data_dict(kalfi_data, data_dict):
@@ -134,9 +138,32 @@ def get_kalfi_meta_data_for_yeshuv_by_display(yeshuv_sn: int, display: KalfiDisp
 
 
 
-def yeshuv_json_response(kalfi_meta_display: Type[KalfiDisplay], yeshuv_knesset_model_data: YeshuvKnesset):
-    json_dict_meta_data = kalfi_meta_display.to_json_dict()
+def __yeshuv_json_data_response(yeshuv_knesset_model_data: YeshuvKnesset):
     json_dict_yeshuv_data = yeshuv_knesset_model_data.to_json_dict()
-    json_dict_meta_data.update(json_dict_yeshuv_data)
-    json_answer_ready = json.dumps(json_dict_meta_data, ensure_ascii=False)
-    return json_answer_ready
+    json_answer_ready_data = json.dumps(json_dict_yeshuv_data,
+                                        ensure_ascii=False)
+    return json_answer_ready_data
+
+def get_yeshuv_knesset_elections_data_json(yeshuv_sn):
+    yeshuv_knesset_model_data = query_yeshuvknesset_by_sn(yeshuv_sn)
+    return __yeshuv_json_data_response(yeshuv_knesset_model_data)
+
+
+
+
+def __yeshuv_json_meta_response(kalfi_meta_display: Type[KalfiDisplay]):
+    json_dict_meta_data = kalfi_meta_display.to_json_dict()
+    json_answer_ready_meta = json.dumps(json_dict_meta_data,
+                                        ensure_ascii=False)
+    return json_answer_ready_meta
+
+
+
+def get_yeshuv_kalfi_json(yeshuv_sn: int, kalfi_num: int)->[str, 'JSON']:
+
+    display = constants.get_representation_by_kalfi_num(
+        kalfi_num)
+    kalfi_meta_display = get_kalfi_meta_data_for_yeshuv_by_display(yeshuv_sn,
+                                                                   display)
+    return __yeshuv_json_meta_response(kalfi_meta_display)
+

@@ -1,7 +1,8 @@
 import unittest
 from app import create_app, db
 from db_helper import query_helper_kalfi_meta_top_or_bottom
-from queries.yeshuv_knesset import query_kalfi_metadata
+from queries.kalfi import query_kalfi_metadata
+
 from queries.knesset22 import query_knesset22_kalfi, \
     query_knesset22_kalfi_bottom_n_vote_percent
 from tests import YESHUV_SN_FOR_TESTING_B, YESHUV_SN_FOR_TESTING_D, \

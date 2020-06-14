@@ -6,6 +6,9 @@ from app import db
 from constants import NUMBER_KALFI_DISPLAY
 from models import Knesset_22
 
+def query_knesset_22_kalfi_count(yeshuv_sn: int) -> int:
+    kalfi_count = Knesset_22.query.filter_by(yeshuv_sn=yeshuv_sn).count()
+    return kalfi_count
 
 def query_knesset22_kalfi(yeshuv_sn: int) -> List[Knesset_22]:
     knesset_22_model_data = Knesset_22.query.filter_by(yeshuv_sn=yeshuv_sn).order_by(Knesset_22.Kalfi_Num).all()
