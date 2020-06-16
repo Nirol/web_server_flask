@@ -1,3 +1,15 @@
-# Created by .ignore support plugin (hsz.mobi)
-config_my.py
-start.py
+*/flask1_try/app/static/*
+*/flask1_try/backup_flask_frontend/*
+*/flask1_try/docs/bootsrap_dl/*
+*/flask1_try/venv/*
+
+
+
+!*/flask1_try/app/static/js/autocomplete.js
+!*/flask1_try/app/static/js/bar_chart_error_vote_percent.js
+
+
+!*/flask1_try/app/static/css/auto_comp.css
+
+!*/flask1_try/app/static/images/*
+!*/
