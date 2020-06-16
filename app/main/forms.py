@@ -1,8 +1,14 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField
-from wtforms.validators import InputRequired
+from models import Yeshuv
+from validators import Yeshuv_Validator
 
 
-class NameForm(FlaskForm):
-    name = StringField('What is your name?', validators=[InputRequired()])
-    submit = SubmitField('Submit')
+class YeshuvNameQuery(FlaskForm):
+    yeshuv_name = StringField('Yeshuv:', validators=[Yeshuv_Validator(
+                                                             Yeshuv,
+                                                             Yeshuv.yeshuv_name_hebrew,
+                                                             message='Yeshuv does not exist!!')])
+    submit1 = SubmitField('Submit')
+
+
